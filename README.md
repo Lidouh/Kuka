@@ -1,1 +1,3 @@
-# Mapping
+# Kuka
+
+Programme destiné au robot Kuka.
