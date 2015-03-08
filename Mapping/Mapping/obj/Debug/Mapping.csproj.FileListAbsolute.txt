@@ -18,3 +18,17 @@ C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\M
 F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Mapping.exe.config
 F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.exe
 F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.pdb
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Mapping.exe
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Mapping.pdb
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.D3DCompiler.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.Direct3D11.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.DXGI.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Game.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Graphics.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Input.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.csprojResolveAssemblyReference.cache
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.Form1.resources
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.Properties.Resources.resources
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.csproj.GenerateResource.Cache
