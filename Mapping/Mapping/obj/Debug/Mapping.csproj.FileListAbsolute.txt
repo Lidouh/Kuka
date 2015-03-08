@@ -1,0 +1,20 @@
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\Mapping.exe.config
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\Mapping.exe
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\Mapping.pdb
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.D3DCompiler.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.Direct3D11.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.DXGI.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Game.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Graphics.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\bin\Debug\SharpDX.Toolkit.Input.dll
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.csprojResolveAssemblyReference.cache
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.Form1.resources
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.Properties.Resources.resources
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.csproj.GenerateResource.Cache
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.exe
+C:\Users\Samia\Documents\Visual Studio 2012\Projects\Mapping\Mapping\obj\Debug\Mapping.pdb
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Mapping.exe.config
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.exe
+F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.pdb
