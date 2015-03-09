@@ -168,18 +168,18 @@ namespace Mapping
             // Create the depth buffer view
             depthView = new DepthStencilView(AppDevice, depthBuffer);
 
-            RasterizerStateDescription rasdesc = new RasterizerStateDescription()
-            {
-                CullMode = CullMode.None,
-                FillMode = FillMode.Solid,
-                IsFrontCounterClockwise = true,
-                DepthBias = 0,
-                DepthBiasClamp = 0,
-                SlopeScaledDepthBias = 0,
-                IsDepthClipEnabled = true,
-                IsMultisampleEnabled = true,
-            };
-            context.Rasterizer.State = new RasterizerState(AppDevice, rasdesc);
+            //RasterizerStateDescription rasdesc = new RasterizerStateDescription()
+            //{
+            //    CullMode = CullMode.None,
+            //    FillMode = FillMode.Solid,
+            //    IsFrontCounterClockwise = true,
+            //    DepthBias = 0,
+            //    DepthBiasClamp = 0,
+            //    SlopeScaledDepthBias = 0,
+            //    IsDepthClipEnabled = true,
+            //    IsMultisampleEnabled = true,
+            //};
+            //context.Rasterizer.State = new RasterizerState(AppDevice, rasdesc);
 
             // Compile Vertex and Pixel shaders
             var vertexShaderByteCode = ShaderBytecode.Compile(Properties.Resources.MiniCube, "VS", "vs_4_0");
@@ -204,19 +204,19 @@ namespace Mapping
             // Instantiate Vertex buiffer from vertex data
             var vertices = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
-                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f), // Front
-                                      //new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f), // Front
+                                      new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
 
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f), // Front - White
-                                      new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f), // Front - White
+                                      //new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      //new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
 
                                       new Vector4(-1.0f, -1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f), // BACK
                                       new Vector4( 1.0f,  1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
