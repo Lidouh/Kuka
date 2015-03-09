@@ -135,7 +135,6 @@ namespace Mapping
             };
 
             // Create Device and SwapChain
-
             SharpDX.Direct3D11.Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out AppDevice, out swapChain);
             context = AppDevice.ImmediateContext;
 
@@ -143,43 +142,28 @@ namespace Mapping
             var factory = swapChain.GetParent<Factory>();
             factory.MakeWindowAssociation(this.Handle, WindowAssociationFlags.IgnoreAll);
 
-            // Resize the backbuffer
-            swapChain.ResizeBuffers(desc.BufferCount, this.ClientSize.Width, this.ClientSize.Height, Format.Unknown, SwapChainFlags.None);
-
             // New RenderTargetView from the backbuffer
             var backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
             renderView = new RenderTargetView(AppDevice, backBuffer);
 
-            // Create the depth buffer
-            depthBuffer = new Texture2D(AppDevice, new Texture2DDescription()
-            {
-                Format = Format.D32_Float_S8X24_UInt,
-                ArraySize = 1,
-                MipLevels = 1,
-                Width = this.ClientSize.Width,
-                Height = this.ClientSize.Height,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.DepthStencil,
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None
-            });
+            
 
-            // Create the depth buffer view
-            depthView = new DepthStencilView(AppDevice, depthBuffer);
+            //// Resize the backbuffer  (not present in MiniCubeTexture)
+            //swapChain.ResizeBuffers(desc.BufferCount, this.ClientSize.Width, this.ClientSize.Height, Format.Unknown, SwapChainFlags.None);
 
-            RasterizerStateDescription rasdesc = new RasterizerStateDescription()
-            {
-                CullMode = CullMode.None,
-                FillMode = FillMode.Solid,
-                IsFrontCounterClockwise = true,
-                DepthBias = 0,
-                DepthBiasClamp = 0,
-                SlopeScaledDepthBias = 0,
-                IsDepthClipEnabled = true,
-                IsMultisampleEnabled = true,
-            };
-            context.Rasterizer.State = new RasterizerState(AppDevice, rasdesc);
+            //// (not present in MiniCubeTexture)
+            //RasterizerStateDescription rasdesc = new RasterizerStateDescription()
+            //{
+            //    CullMode = CullMode.None,
+            //    FillMode = FillMode.Solid,
+            //    IsFrontCounterClockwise = true,
+            //    DepthBias = 0,
+            //    DepthBiasClamp = 0,
+            //    SlopeScaledDepthBias = 0,
+            //    IsDepthClipEnabled = true,
+            //    IsMultisampleEnabled = true,
+            //};
+            //context.Rasterizer.State = new RasterizerState(AppDevice, rasdesc);
 
             // Compile Vertex and Pixel shaders
             var vertexShaderByteCode = ShaderBytecode.Compile(Properties.Resources.MiniCube, "VS", "vs_4_0");
@@ -198,60 +182,55 @@ namespace Mapping
                         new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
                         // Second is a 4-float element tagged as "COLOR" in First.fx from SimpleColorVertex struct
 						// Each float is 32 bits (4 bytes), so this element is 16 bytes from the start of the structure
-                        new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0)
+                        //new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 16, 0)
+                        new InputElement("TEXCOORD", 0, Format.R32G32_Float, 16, 0)
                     });
 
             // Instantiate Vertex buiffer from vertex data
             var vertices = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
-                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f), // Front
-                                      //new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
-                                      //new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 0.0f, 1.0f),
+                                      // 3D coordinates              UV Texture coordinates
+                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Front
+                                      -1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
+                                       1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
+                                       1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
 
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f), // Front - White
-                                      new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
 
-                                      new Vector4(-1.0f, -1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f), // BACK
-                                      new Vector4( 1.0f,  1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4(-1.0f,  1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4(-1.0f, -1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f, -1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f,  1.0f, 1.0f), new Vector4(255.0f, 255.0f, 255.0f, 1.0f),
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
+                                      -1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                       1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
 
-                                      new Vector4(-1.0f, 1.0f, -1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f), // Top
-                                      new Vector4(-1.0f, 1.0f,  1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f, 1.0f,  1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4(-1.0f, 1.0f, -1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f, 1.0f,  1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f, 1.0f, -1.0f,  1.0f), new Vector4(0.0f, 0.0f, 1.0f, 1.0f),
+                                      -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f, // Bottom
+                                       1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
+                                      -1.0f,-1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
+                                      -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f,
+                                       1.0f,-1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
+                                       1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
 
-                                      new Vector4(-1.0f,-1.0f, -1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f), // Bottom
-                                      new Vector4( 1.0f,-1.0f,  1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-                                      new Vector4(-1.0f,-1.0f,  1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-                                      new Vector4(-1.0f,-1.0f, -1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-                                      new Vector4( 1.0f,-1.0f, -1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
-                                      new Vector4( 1.0f,-1.0f,  1.0f,  1.0f), new Vector4(1.0f, 1.0f, 0.0f, 1.0f),
+                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Left
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
+                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      -1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
 
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f), // Left
-                                      new Vector4(-1.0f, -1.0f,  1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4(-1.0f,  1.0f,  1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4(-1.0f, -1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4(-1.0f,  1.0f,  1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-                                      new Vector4(-1.0f,  1.0f, -1.0f, 1.0f), new Vector4(1.0f, 0.0f, 1.0f, 1.0f),
-
-                                      new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f), // Right
-                                      new Vector4( 1.0f,  1.0f,  1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f, -1.0f,  1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f, -1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f, -1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
-                                      new Vector4( 1.0f,  1.0f,  1.0f, 1.0f), new Vector4(0.0f, 1.0f, 1.0f, 1.0f),
+                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
 
                                   });
 
@@ -259,15 +238,55 @@ namespace Mapping
             //var contantBuffer = new SharpDX.Direct3D11.Buffer(AppDevice, Utilities.SizeOf<Matrix>(), ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
             contantBuffer = new SharpDX.Direct3D11.Buffer(AppDevice, Utilities.SizeOf<Matrix>(), ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
 
+            // Create Depth Buffer & View
+            var depthBuffer = new Texture2D(AppDevice, new Texture2DDescription()
+            {
+                Format = Format.D32_Float_S8X24_UInt,
+                ArraySize = 1,
+                MipLevels = 1,
+                Width = this.ClientSize.Width,
+                Height = this.ClientSize.Height,
+                SampleDescription = new SampleDescription(1, 0),
+                Usage = ResourceUsage.Default,
+                BindFlags = BindFlags.DepthStencil,
+                CpuAccessFlags = CpuAccessFlags.None,
+                OptionFlags = ResourceOptionFlags.None
+            });
+
+            var depthView = new DepthStencilView(AppDevice, depthBuffer);
+
+            // Load texture and create sampler
+            var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\square.jpg");
+            //var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
+            var textureView = new ShaderResourceView(AppDevice, texture);
+
+            var sampler = new SamplerState(AppDevice, new SamplerStateDescription()
+            {
+                Filter = Filter.MinMagMipLinear,
+                AddressU = TextureAddressMode.Wrap,
+                AddressV = TextureAddressMode.Wrap,
+                AddressW = TextureAddressMode.Wrap,
+                BorderColor = SharpDX.Color.Black,
+                ComparisonFunction = Comparison.Never,
+                MaximumAnisotropy = 16,
+                MipLodBias = 0,
+                MinimumLod = 0,
+                MaximumLod = 16,
+            });
+
             // Prepare All the stages
             context.InputAssembler.InputLayout = layout;
             context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() * 2, 0));
+            //context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() * 2, 0));
             //Utilities.SizeOf<Vector4>() * 2 = 32
-            context.VertexShader.Set(vertexShader);
+            context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
             context.VertexShader.SetConstantBuffer(0, contantBuffer);
+            context.VertexShader.Set(vertexShader);
             context.Rasterizer.SetViewport(new Viewport(0, 0, this.ClientSize.Width, this.ClientSize.Height, 0.0f, 1.0f));
             context.PixelShader.Set(pixelShader);
+            context.PixelShader.SetSampler(0, sampler);
+            context.PixelShader.SetShaderResource(0, textureView);
+            //context.OutputMerger.SetTargets(depthView, renderView);
             context.OutputMerger.SetTargets(renderView);
 
             //// Prepare matrices
