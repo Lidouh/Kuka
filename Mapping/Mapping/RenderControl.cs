@@ -233,23 +233,37 @@ namespace Mapping
             verticesBack = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
                                       // 3D coordinates              UV Texture coordinates
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                      //-1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
+                                      // 1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                      //-1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                      //-1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      // 1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                      // 1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f, // BACK
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
                                   });
 
             verticesTop = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
                                       // 3D coordinates              UV Texture coordinates
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
-                                      -1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                       1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+                                      //-1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
+                                      //-1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
+                                      // 1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                      //-1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
+                                      // 1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                      // 1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 0.0f, // Top
+                                      -1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
+                                       1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
                                   });
 
             verticesBottom = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
@@ -277,12 +291,19 @@ namespace Mapping
             verticesRight = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
                                       // 3D coordinates              UV Texture coordinates
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       //1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
+                                       //1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       //1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                       //1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       //1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
+                                       //1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+
+                                       1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Right
+                                       1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                        1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
                                        1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                   });
 
             // Create Constant Buffer
