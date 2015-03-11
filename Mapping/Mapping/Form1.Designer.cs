@@ -34,16 +34,16 @@
             // renderControl1
             // 
             this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.renderControl1.Location = new System.Drawing.Point(34, 38);
+            this.renderControl1.Location = new System.Drawing.Point(12, 44);
             this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Size = new System.Drawing.Size(364, 348);
+            this.renderControl1.Size = new System.Drawing.Size(408, 397);
             this.renderControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 423);
+            this.ClientSize = new System.Drawing.Size(861, 453);
             this.Controls.Add(this.renderControl1);
             this.Name = "Form1";
             this.Text = "Form1";
