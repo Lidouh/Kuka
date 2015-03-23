@@ -92,6 +92,13 @@ namespace Mapping
 
         }
 
+        public void AlterTexture() 
+        {
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
+            textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+        
+        }
+
         public void Render()
         {
             if (context != null)

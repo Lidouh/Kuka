@@ -28,8 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.buttonBrowse = new System.Windows.Forms.Button();
             this.renderControl1 = new Mapping.RenderControl();
             this.SuspendLayout();
+            // 
+            // buttonBrowse
+            // 
+            this.buttonBrowse.Location = new System.Drawing.Point(607, 44);
+            this.buttonBrowse.Name = "buttonBrowse";
+            this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowse.TabIndex = 1;
+            this.buttonBrowse.Text = "Parcourir";
+            this.buttonBrowse.UseVisualStyleBackColor = true;
+            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
             // 
             // renderControl1
             // 
@@ -44,6 +55,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(861, 453);
+            this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.renderControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -54,6 +66,7 @@
         #endregion
 
         private RenderControl renderControl1;
+        private System.Windows.Forms.Button buttonBrowse;
     }
 }
 
