@@ -32,3 +32,17 @@ F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.csprojResolveAssemblyReferen
 F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.Form1.resources
 F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.Properties.Resources.resources
 F:\ISIB4\Git_Kuka\Mapping\Mapping\obj\Debug\Mapping.csproj.GenerateResource.Cache
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.DebuggerVisualizers.VS2010.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.GPU.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.ML.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.OCR.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.UI.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.Util.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\ZedGraph.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.GPU.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.ML.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.OCR.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.UI.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.Util.xml

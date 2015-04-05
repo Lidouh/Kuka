@@ -8,16 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Emgu.CV;
+using Emgu.Util;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using System.Collections;
+using System.IO;
 
 namespace Mapping
 {
     public partial class Form1 : Form
     {
+        Point[] pts;
+        List<Point> pixels = new List<Point>();
+        string file;
+
         public Form1()
         {
             InitializeComponent();
             this.Text = "Virtual Mapping";
             //pictureBox1.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
+            //Image<Bgr, Byte> image = new Image<Bgr, byte>(100, 100);
         }
 
         public void Render()
@@ -28,10 +39,67 @@ namespace Mapping
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
-            //renderControl1.AlterTexture();
-            //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
+            OpenFileDialog fDialog = new OpenFileDialog();
+            fDialog.Title = "Open Image File";
+            //fDialog.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+            fDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            //fDialog.InitialDirectory = @"C:\";
+            DialogResult result = fDialog.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                file = fDialog.FileName;
+                try
+                {
+                    pictureBox1.Image = new Bitmap(file);
+                    Console.WriteLine(file);
+                }
+                catch (IOException)
+                {
+                }
+            }
             
+            Console.WriteLine(result); // <-- For debugging use.
             
+        }
+
+        public void IdentifyContours(Bitmap colorImage, int thresholdValue, bool invert, out Bitmap processedGray, out Bitmap processedColor)
+        {
+            Image<Gray, byte> grayImage = new Image<Gray, byte>(colorImage);
+            Image<Bgr, byte> color = new Image<Bgr, byte>(colorImage);
+
+            grayImage = grayImage.ThresholdBinary(new Gray(thresholdValue), new Gray(255));
+
+            if (invert)
+            {
+                grayImage._Not();
+            }
+
+            using (MemStorage storage = new MemStorage())
+            {
+
+                for (Contour<Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
+                {
+
+                    Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
+                    if (currentContour.BoundingRectangle.Width > 20)
+                    {
+                        CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
+                        color.Draw(currentContour.BoundingRectangle, new Bgr(0, 255, 0), 1);
+                    }
+
+                    pts = currentContour.ToArray();
+                    foreach (Point p in pts)
+                    {
+                        //add points to listbox
+                        listBox1.Items.Add(p);
+                        pixels.Add(p);
+                    }
+                }
+            }
+
+            processedColor = color.ToBitmap();
+            processedGray = grayImage.ToBitmap();
+
         }
 
         public Image RotateImage(Image img, float rotationAngle)
@@ -92,6 +160,80 @@ namespace Mapping
             g.Dispose();
 
             return (Image)b;
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y-1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y-1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+
+            pictureBox1.Image = bmp;
+            Console.WriteLine(pixels[listBox1.SelectedIndex].X + " , " + pixels[listBox1.SelectedIndex].Y);
+
+        }
+
+        private void buttonCoordinates_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
+
+            Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
+
+            Gray cannyThreshold = new Gray(80);
+            Gray cannyThresholdLinking = new Gray(120);
+            Gray circleAccumulatorThreshold = new Gray(120);
+
+            Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
+
+            Bitmap color;
+            Bitmap bgray;
+            IdentifyContours(cannyEdges.Bitmap, 50, true, out bgray, out color);
+
+            pictureBox1.Image = color;
+            //pictureBox1.Image = bgray;
+
+        }
+
+        private void buttonPreview_Click(object sender, EventArgs e)
+        {
+            if(file !=null)
+            renderControl1.AlterTexture(file);
+            //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
+
+        }
+
+        private void buttonReinit_Click(object sender, EventArgs e)
+        {
+            renderControl1.ReinitTexture();
         }
     }
 }
