@@ -32,7 +32,19 @@ namespace Mapping
         Texture2D depthBuffer = null;
         DepthStencilView depthView = null;
 
-        SharpDX.Direct3D11.Buffer contantBuffer;
+        private SharpDX.Direct3D11.Buffer contantBuffer;
+        private SharpDX.Direct3D11.Buffer verticesFront;
+        private SharpDX.Direct3D11.Buffer verticesBack;
+        private SharpDX.Direct3D11.Buffer verticesTop;
+        private SharpDX.Direct3D11.Buffer verticesBottom;
+        private SharpDX.Direct3D11.Buffer verticesLeft;
+        private SharpDX.Direct3D11.Buffer verticesRight;
+        private ShaderResourceView textureViewFront;
+        private ShaderResourceView textureViewBack;
+        private ShaderResourceView textureViewTop;
+        private ShaderResourceView textureViewBottom;
+        private ShaderResourceView textureViewLeft;
+        private ShaderResourceView textureViewRight;
 
         //private Font fontForDesignMode;
         //SharpDX.Direct3D11.Device AppDevice;
@@ -80,12 +92,20 @@ namespace Mapping
 
         }
 
+        public void AlterTexture() 
+        {
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
+            textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+        
+        }
+
         public void Render()
         {
             if (context != null)
             {
                 // Prepare matrices
-                var view = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY);
+                //var view = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY);
+                var view = Matrix.LookAtLH(new Vector3(3, 1, -5), new Vector3(0, 0, 0), Vector3.UnitY);
                 Matrix proj = Matrix.Identity;
 
                 // Setup new projection matrix with correct aspect ratio
@@ -102,7 +122,26 @@ namespace Mapping
                 worldViewProj.Transpose();
                 context.UpdateSubresource(ref worldViewProj, contantBuffer);
 
-                context.Draw(36, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesFront, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewFront);
+                context.Draw(6, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesBack, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewBack);
+                context.Draw(6, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesTop, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewTop);
+                context.Draw(6, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesBottom, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewBottom);
+                context.Draw(6, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesLeft, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewLeft);
+                context.Draw(6, 0);
+                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(verticesRight, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+                context.PixelShader.SetShaderResource(0, textureViewRight);
+                context.Draw(6, 0);
+
+                //context.Draw(36, 0);
                 swapChain.Present(0, PresentFlags.None);
 
             }
@@ -187,7 +226,7 @@ namespace Mapping
                     });
 
             // Instantiate Vertex buiffer from vertex data
-            var vertices = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+            verticesFront = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
                                   {
                                       // 3D coordinates              UV Texture coordinates
                                       -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Front
@@ -196,42 +235,82 @@ namespace Mapping
                                       -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
                                        1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
                                        1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+                                  });
 
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+            verticesBack = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+                                  {
+                                      // 3D coordinates              UV Texture coordinates
+                                      //-1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
+                                      // 1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                      //-1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                      //-1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      // 1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                      // 1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
 
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
-                                      -1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                       1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f, // BACK
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
+                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
+                                  });
 
+            verticesTop = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+                                  {
+                                      // 3D coordinates              UV Texture coordinates
+                                      //-1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
+                                      //-1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
+                                      // 1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                      //-1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
+                                      // 1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                      // 1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 0.0f, // Top
+                                      -1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
+                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
+                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
+                                       1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
+                                  });
+
+            verticesBottom = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+                                  {
+                                      // 3D coordinates              UV Texture coordinates
                                       -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f, // Bottom
                                        1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
                                       -1.0f,-1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
                                       -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f,
                                        1.0f,-1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
                                        1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
+                                  });
 
+            verticesLeft = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+                                  {
+                                      // 3D coordinates              UV Texture coordinates
                                       -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Left
                                       -1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
                                       -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                       -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
                                       -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                       -1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+                                  });
 
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+            verticesRight = SharpDX.Direct3D11.Buffer.Create(AppDevice, BindFlags.VertexBuffer, new[]
+                                  {
+                                      // 3D coordinates              UV Texture coordinates
+                                       //1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
+                                       //1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                                       //1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
+                                       //1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       //1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
+                                       //1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+
+                                       1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Right
+                                       1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                        1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
+                                       1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
                                        1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-
+                                       1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
                                   });
 
             // Create Constant Buffer
@@ -239,7 +318,7 @@ namespace Mapping
             contantBuffer = new SharpDX.Direct3D11.Buffer(AppDevice, Utilities.SizeOf<Matrix>(), ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
 
             // Create Depth Buffer & View
-            var depthBuffer = new Texture2D(AppDevice, new Texture2DDescription()
+            depthBuffer = new Texture2D(AppDevice, new Texture2DDescription()
             {
                 Format = Format.D32_Float_S8X24_UInt,
                 ArraySize = 1,
@@ -256,9 +335,21 @@ namespace Mapping
             var depthView = new DepthStencilView(AppDevice, depthBuffer);
 
             // Load texture and create sampler
-            var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\square.jpg");
+            //var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\square.jpg");
             //var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
-            var textureView = new ShaderResourceView(AppDevice, texture);
+            var textureFront = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\front.jpg");
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\back.jpg");
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\top.jpg");
+            var textureBottom = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\bottom.jpg");
+            var textureLeft = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\left.jpg");
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\right.jpg");
+            //var textureView = new ShaderResourceView(AppDevice, texture);
+            textureViewFront = new ShaderResourceView(AppDevice, textureFront);
+            textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+            textureViewTop = new ShaderResourceView(AppDevice, textureTop);
+            textureViewBottom = new ShaderResourceView(AppDevice, textureBottom);
+            textureViewLeft = new ShaderResourceView(AppDevice, textureLeft);
+            textureViewRight = new ShaderResourceView(AppDevice, textureRight);
 
             var sampler = new SamplerState(AppDevice, new SamplerStateDescription()
             {
@@ -279,13 +370,13 @@ namespace Mapping
             context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
             //context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() * 2, 0));
             //Utilities.SizeOf<Vector4>() * 2 = 32
-            context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+            //context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
             context.VertexShader.SetConstantBuffer(0, contantBuffer);
             context.VertexShader.Set(vertexShader);
             context.Rasterizer.SetViewport(new Viewport(0, 0, this.ClientSize.Width, this.ClientSize.Height, 0.0f, 1.0f));
             context.PixelShader.Set(pixelShader);
             context.PixelShader.SetSampler(0, sampler);
-            context.PixelShader.SetShaderResource(0, textureView);
+            //context.PixelShader.SetShaderResource(0, textureView);
             //context.OutputMerger.SetTargets(depthView, renderView);
             context.OutputMerger.SetTargets(renderView);
 
