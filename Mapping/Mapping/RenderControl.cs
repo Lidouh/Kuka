@@ -92,11 +92,31 @@ namespace Mapping
 
         }
 
-        public void AlterTexture() 
+        public void AlterTexture(string file) 
         {
-            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            //var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
             textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            textureViewTop = new ShaderResourceView(AppDevice, textureTop);
+
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            textureViewRight = new ShaderResourceView(AppDevice, textureRight);
         
+        }
+
+        public void ReinitTexture()
+        {
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\back.jpg");
+            textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\top.jpg");
+            textureViewTop = new ShaderResourceView(AppDevice, textureTop);
+
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\right.jpg");
+            textureViewRight = new ShaderResourceView(AppDevice, textureRight);
+
         }
 
         public void Render()
