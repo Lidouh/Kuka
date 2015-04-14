@@ -203,6 +203,8 @@ namespace Mapping
 
         private void buttonCoordinates_Click(object sender, EventArgs e)
         {
+            if (pictureBox1.Image != null)
+            {
             Bitmap bmp = new Bitmap(pictureBox1.Image);
             Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
 
@@ -220,6 +222,7 @@ namespace Mapping
 
             pictureBox1.Image = color;
             //pictureBox1.Image = bgray;
+            }
 
         }
 
