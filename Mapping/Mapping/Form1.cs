@@ -79,7 +79,7 @@ namespace Mapping
 
                 for (Contour<Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
                 {
-
+                    
                     Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
                     if (currentContour.BoundingRectangle.Width > 20)
                     {
@@ -165,63 +165,67 @@ namespace Mapping
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Bitmap bmp = new Bitmap(pictureBox1.Image);
+            if (pixels[listBox1.SelectedIndex].X < bmp.Width - 2 && pixels[listBox1.SelectedIndex].X > 2
+                && pixels[listBox1.SelectedIndex].Y < bmp.Height - 2 && pixels[listBox1.SelectedIndex].Y > 22)
+            {
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y-1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y-1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y+1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-            bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
-
-            pictureBox1.Image = bmp;
-            Console.WriteLine(pixels[listBox1.SelectedIndex].X + " , " + pixels[listBox1.SelectedIndex].Y);
-
+                pictureBox1.Image = bmp;
+                Console.WriteLine(pixels[listBox1.SelectedIndex].X + " , " + pixels[listBox1.SelectedIndex].Y);
+            }
         }
 
         private void buttonCoordinates_Click(object sender, EventArgs e)
         {
             if (pictureBox1.Image != null)
             {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
+                pixels.Clear();
+                listBox1.Items.Clear();
+                Bitmap bmp = new Bitmap(pictureBox1.Image);
+                Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
 
-            Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
+                Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
 
-            Gray cannyThreshold = new Gray(80);
-            Gray cannyThresholdLinking = new Gray(120);
-            Gray circleAccumulatorThreshold = new Gray(120);
+                Gray cannyThreshold = new Gray(80);
+                Gray cannyThresholdLinking = new Gray(120);
+                Gray circleAccumulatorThreshold = new Gray(120);
 
-            Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
+                Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
 
-            Bitmap color;
-            Bitmap bgray;
-            IdentifyContours(cannyEdges.Bitmap, 50, true, out bgray, out color);
+                Bitmap color;
+                Bitmap bgray;
+                IdentifyContours(cannyEdges.Bitmap, 50, true, out bgray, out color);
 
-            pictureBox1.Image = color;
-            //pictureBox1.Image = bgray;
+                pictureBox1.Image = color;
+                //pictureBox1.Image = bgray;
             }
 
         }
