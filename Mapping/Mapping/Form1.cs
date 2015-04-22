@@ -34,7 +34,6 @@ namespace Mapping
         public void Render()
         {
             renderControl1.Render();
-            
         }
 
         private void buttonBrowse_Click(object sender, EventArgs e)
@@ -53,13 +52,10 @@ namespace Mapping
                     pictureBox1.Image = new Bitmap(file);
                     Console.WriteLine(file);
                 }
-                catch (IOException)
-                {
-                }
+                catch (IOException){}
             }
             
             Console.WriteLine(result); // <-- For debugging use.
-            
         }
 
         public void IdentifyContours(Bitmap colorImage, int thresholdValue, bool invert, out Bitmap processedGray, out Bitmap processedColor)
@@ -81,6 +77,7 @@ namespace Mapping
                 {
                     
                     Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
+                    //Contour<Point> currentContour = contours;
                     if (currentContour.BoundingRectangle.Width > 20)
                     {
                         CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
@@ -102,6 +99,7 @@ namespace Mapping
 
         }
 
+        //not used
         public Image RotateImage(Image img, float rotationAngle)
         {
             //create an empty Bitmap image
@@ -132,6 +130,7 @@ namespace Mapping
             return bmp;
         }
 
+        //not used
         public Image ResizeImage(Image imgToResize, Size size)
         {
             int sourceWidth = imgToResize.Width;
@@ -242,5 +241,7 @@ namespace Mapping
         {
             renderControl1.ReinitTexture();
         }
+
+
     }
 }

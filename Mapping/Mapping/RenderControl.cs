@@ -13,6 +13,7 @@ using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using SharpDX.Windows;
+using System.IO;
 
 
 namespace Mapping
@@ -45,6 +46,7 @@ namespace Mapping
         private ShaderResourceView textureViewBottom;
         private ShaderResourceView textureViewLeft;
         private ShaderResourceView textureViewRight;
+        string project_directory = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
 
         //private Font fontForDesignMode;
         //SharpDX.Direct3D11.Device AppDevice;
@@ -108,13 +110,13 @@ namespace Mapping
 
         public void ReinitTexture()
         {
-            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\back.jpg");
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\back.jpg");
             textureViewBack = new ShaderResourceView(AppDevice, textureBack);
 
-            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\top.jpg");
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\top.jpg");
             textureViewTop = new ShaderResourceView(AppDevice, textureTop);
 
-            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\right.jpg");
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\right.jpg");
             textureViewRight = new ShaderResourceView(AppDevice, textureRight);
 
         }
@@ -357,12 +359,12 @@ namespace Mapping
             // Load texture and create sampler
             //var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\square.jpg");
             //var texture = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\GeneticaMortarlessBlocks.jpg");
-            var textureFront = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\front.jpg");
-            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\back.jpg");
-            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\top.jpg");
-            var textureBottom = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\bottom.jpg");
-            var textureLeft = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\left.jpg");
-            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, "F:\\ISIB4\\Git_Kuka\\Mapping\\Mapping\\right.jpg");
+            var textureFront = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\front.jpg");
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\back.jpg");
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\top.jpg");
+            var textureBottom = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\bottom.jpg");
+            var textureLeft = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\left.jpg");
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\right.jpg");
             //var textureView = new ShaderResourceView(AppDevice, texture);
             textureViewFront = new ShaderResourceView(AppDevice, textureFront);
             textureViewBack = new ShaderResourceView(AppDevice, textureBack);
