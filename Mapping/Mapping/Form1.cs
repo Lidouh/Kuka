@@ -14,13 +14,15 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Collections;
 using System.IO;
+using AForge.Imaging.Filters;
+using AForge;
 
 namespace Mapping
 {
     public partial class Form1 : Form
     {
-        Point[] pts;
-        List<Point> pixels = new List<Point>();
+        System.Drawing.Point [] pts;
+        List<System.Drawing.Point> pixels = new List<System.Drawing.Point>();
         string file;
 
         public Form1()
@@ -50,6 +52,7 @@ namespace Mapping
                 try
                 {
                     pictureBox1.Image = new Bitmap(file);
+                    pictureBox4.Image = new Bitmap(file);
                     Console.WriteLine(file);
                 }
                 catch (IOException){}
@@ -73,19 +76,19 @@ namespace Mapping
             using (MemStorage storage = new MemStorage())
             {
 
-                for (Contour<Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
+                for (Contour<System.Drawing.Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
                 {
                     
-                    Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
+                    Contour<System.Drawing.Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
                     //Contour<Point> currentContour = contours;
                     if (currentContour.BoundingRectangle.Width > 20)
                     {
-                        CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
+                        CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new System.Drawing.Point(0, 0));
                         color.Draw(currentContour.BoundingRectangle, new Bgr(0, 255, 0), 1);
                     }
 
                     pts = currentContour.ToArray();
-                    foreach (Point p in pts)
+                    foreach (System.Drawing.Point p in pts)
                     {
                         //add points to listbox
                         listBox1.Items.Add(p);
@@ -121,7 +124,7 @@ namespace Mapping
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             //now draw our new image onto the graphics object
-            gfx.DrawImage(img, new Point(0, 0));
+            gfx.DrawImage(img, new System.Drawing.Point(0, 0));
 
             //dispose of our Graphics object
             gfx.Dispose();
@@ -231,10 +234,61 @@ namespace Mapping
 
         private void buttonPreview_Click(object sender, EventArgs e)
         {
-            if(file !=null)
-            renderControl1.AlterTexture(file);
-            //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
+            if (file != null)
+            {
+                renderControl1.AlterTexture(file);
+                //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
 
+                List<IntPoint> cornersRight = new List<IntPoint>();
+                cornersRight.Add(new IntPoint(0, 0));
+                cornersRight.Add(new IntPoint(pictureBox1.Image.Width / 2, pictureBox1.Image.Height / 2));
+                cornersRight.Add(new IntPoint(pictureBox1.Image.Width / 2, pictureBox1.Image.Height));
+                cornersRight.Add(new IntPoint(0, pictureBox1.Image.Height));
+                // create filter
+                SimpleQuadrilateralTransformation filterRight =
+                    new SimpleQuadrilateralTransformation(cornersRight, 200, 200);
+                // apply the filter
+                Bitmap newImageRight = filterRight.Apply(new Bitmap(pictureBox1.Image));
+                pictureBox2.Image = newImageRight;
+
+                List<IntPoint> cornersBack = new List<IntPoint>();
+                cornersBack.Add(new IntPoint(pictureBox1.Image.Width / 2, pictureBox1.Image.Height / 2));
+                cornersBack.Add(new IntPoint(pictureBox1.Image.Width, 0));
+                cornersBack.Add(new IntPoint(pictureBox1.Image.Width, pictureBox1.Image.Height));
+                cornersBack.Add(new IntPoint(pictureBox1.Image.Width /2, pictureBox1.Image.Height));
+                // create filter
+                SimpleQuadrilateralTransformation filterBack =
+                    new SimpleQuadrilateralTransformation(cornersBack, 200, 200);
+                // apply the filter
+                Bitmap newImageBack = filterBack.Apply(new Bitmap(pictureBox1.Image));
+                pictureBox3.Image = newImageBack;
+
+                CropTriangle();
+            }
+        }
+
+        private void CropTriangle()
+        {
+            // create a graphic path to hold the shape data
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            // add a set of points that define the shape
+            path.AddLines(new System.Drawing.Point[]
+                              { new System.Drawing.Point(0, 0),
+                                new System.Drawing.Point(pictureBox1.Image.Width, 0),
+                                new System.Drawing.Point(pictureBox1.Image.Width /2, pictureBox1.Image.Height /2)
+                              });
+            // close the shape
+            path.CloseAllFigures();
+            // create graphics object
+            Graphics graph = pictureBox1.CreateGraphics();
+            //the white image
+            graph.FillRectangle(new SolidBrush(Color.White),
+                new Rectangle(0, 0, pictureBox1.Image.Width, pictureBox1.Image.Height));
+            // set the clop region of the forms graphic object to be the new shape
+            graph.Clip = new Region(path);
+            //graph.RotateTransform(-45);
+            // draw the image cliped to the custom shape
+            graph.DrawImage(pictureBox1.Image, new System.Drawing.Point(0, 0));
         }
 
         private void buttonReinit_Click(object sender, EventArgs e)

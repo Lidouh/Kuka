@@ -46,3 +46,5 @@ F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.ML.xml
 F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.OCR.xml
 F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.CV.UI.xml
 F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\Emgu.Util.xml
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\AForge.Math.dll
+F:\ISIB4\Git_Kuka\Mapping\Mapping\bin\Debug\AForge.Math.xml
