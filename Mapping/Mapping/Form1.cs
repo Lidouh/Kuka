@@ -52,7 +52,7 @@ namespace Mapping
                 try
                 {
                     pictureBox1.Image = new Bitmap(file);
-                    pictureBox4.Image = new Bitmap(file);
+                    //pictureBox4.Image = new Bitmap(file);
                     Console.WriteLine(file);
                 }
                 catch (IOException){}
@@ -106,7 +106,9 @@ namespace Mapping
         public Image RotateImage(Image img, float rotationAngle)
         {
             //create an empty Bitmap image
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
+            int hypotenuse = (int) Math.Sqrt(img.Width*img.Width + img.Height*img.Height);
+            Bitmap bmp = new Bitmap(hypotenuse, hypotenuse);
+            //Bitmap bmp = new Bitmap(img.Width, img.Height);
 
             //turn the Bitmap into a Graphics object
             Graphics gfx = Graphics.FromImage(bmp);
@@ -117,14 +119,14 @@ namespace Mapping
             //now rotate the image
             gfx.RotateTransform(rotationAngle);
 
-            gfx.TranslateTransform(-(float)bmp.Width / 2, -(float)bmp.Height / 2);
+            gfx.TranslateTransform(-(float)bmp.Width / 2 , -(float)bmp.Height / 2 );
 
             //set the InterpolationMode to HighQualityBicubic so to ensure a high
             //quality image once it is transformed to the specified size
             gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             //now draw our new image onto the graphics object
-            gfx.DrawImage(img, new System.Drawing.Point(0, 0));
+            gfx.DrawImage(img, new System.Drawing.Point((hypotenuse - img.Width) / 2, (hypotenuse - img.Height) / 2));
 
             //dispose of our Graphics object
             gfx.Dispose();
@@ -263,7 +265,8 @@ namespace Mapping
                 Bitmap newImageBack = filterBack.Apply(new Bitmap(pictureBox1.Image));
                 pictureBox3.Image = newImageBack;
 
-                CropTriangle();
+                //CropTriangle();
+                pictureBox4.Image = RotateImage(pictureBox1.Image, -45);
             }
         }
 
@@ -280,15 +283,23 @@ namespace Mapping
             // close the shape
             path.CloseAllFigures();
             // create graphics object
-            Graphics graph = pictureBox1.CreateGraphics();
+            Bitmap bmp = new Bitmap(pictureBox1.Image.Width, pictureBox1.Image.Height / 2);
+            //Graphics graph = pictureBox4.CreateGraphics();
+            Graphics graph = Graphics.FromImage(bmp);
             //the white image
             graph.FillRectangle(new SolidBrush(Color.White),
                 new Rectangle(0, 0, pictureBox1.Image.Width, pictureBox1.Image.Height));
             // set the clop region of the forms graphic object to be the new shape
             graph.Clip = new Region(path);
+
             //graph.RotateTransform(-45);
+            //graph.TranslateTransform(-pictureBox1.Image.Width * 1/2, pictureBox1.Image.Height );
             // draw the image cliped to the custom shape
             graph.DrawImage(pictureBox1.Image, new System.Drawing.Point(0, 0));
+            //pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox4.Image = bmp;
+            //pictureBox4.Image = RotateImage(pictureBox4.Image, -45);
+
         }
 
         private void buttonReinit_Click(object sender, EventArgs e)
