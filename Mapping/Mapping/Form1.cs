@@ -127,12 +127,41 @@ namespace Mapping
 
             //now draw our new image onto the graphics object
             gfx.DrawImage(img, new System.Drawing.Point((hypotenuse - img.Width) / 2, (hypotenuse - img.Height) / 2));
+            //gfx.DrawImage(img, new System.Drawing.Point(0, 0));
 
             //dispose of our Graphics object
             gfx.Dispose();
 
+            //float x = 0 ;
+            //float y = 0 ;
+            //float cx = img.Width / 2; float cy = img.Height / 2;
+            //// translate point to origin
+            //float tempX = x - cx;
+            //float tempY = y - cy;
+
+            //// now apply rotation
+            //float rotatedX = tempX * (float)Math.Cos(rotationAngle) - tempY * (float) Math.Sin(rotationAngle);
+            //float rotatedY = tempX * (float)Math.Sin(rotationAngle) + tempY * (float) Math.Cos(rotationAngle);
+
+            //// translate back
+            //x = rotatedX + cx + (hypotenuse - img.Width) / 2;
+            //y = rotatedY + cy + (hypotenuse - img.Height) / 2;
+
+            //Console.WriteLine("X=" + x + " - " + " Y=" + y);
+
             //return the image
             return bmp;
+        }
+
+        public static System.Drawing.Point RotatePoint(float angle, System.Drawing.Point pt)
+        {
+            var a = angle * System.Math.PI / 180.0;
+            float cosa = (float)Math.Cos(a);
+            float sina = (float)Math.Sin(a);
+            System.Drawing.Point newPoint = new System.Drawing.Point(
+                                                (int) (pt.X * cosa - pt.Y * sina),
+                                                (int) (pt.X * sina + pt.Y * cosa));
+            return newPoint;
         }
 
         //not used
@@ -266,7 +295,15 @@ namespace Mapping
                 pictureBox3.Image = newImageBack;
 
                 //CropTriangle();
-                pictureBox4.Image = RotateImage(pictureBox1.Image, -45);
+                pictureBox4.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
+
+                //System.Drawing.Point coinDH = new System.Drawing.Point(pictureBox4.Image.Width, 0);
+                //System.Drawing.Point newcoinDH = RotatePoint(-45, coinDH);
+                //Console.WriteLine("X=" + newcoinDH.X + " - "+ " Y=" +newcoinDH.Y);
+
+                pictureBox4.Image = RotateImage(pictureBox4.Image, -45);
+                //pictureBox4.Image = ResizeImage(pictureBox4.Image, new Size(200, 200));
+                //Console.WriteLine("Height=" + pictureBox4.Image.Height);
             }
         }
 
