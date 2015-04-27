@@ -485,19 +485,60 @@ namespace Mapping
 
         }
 
+        private void settingPixels(PictureBox pictureB, ListBox listB, List<System.Drawing.Point> listP)
+        {
+            Bitmap bmp = new Bitmap(pictureB.Image);
+            if (listP[listB.SelectedIndex].X < bmp.Width - 2 && listP[listB.SelectedIndex].X > 2
+                && listP[listB.SelectedIndex].Y < bmp.Height - 2 && listP[listB.SelectedIndex].Y > 22)
+            {
+                bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y - 2, Color.Black);
+
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y - 2, Color.Black);
+
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y - 2, Color.Black);
+
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y - 2, Color.Black);
+
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y - 2, Color.Black);
+
+                pictureB.Image = bmp;
+            }
+        
+        }
+
         private void listBoxBack_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            settingPixels(pictureBoxBack, listBoxBack, listPixBack);
         }
 
         private void listBoxRight_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            settingPixels(pictureBoxRight, listBoxRight, listPixRight);
         }
 
         private void listBoxTop_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            settingPixels(pictureBoxTop, listBoxTop, listPixTop);
         }
 
 
