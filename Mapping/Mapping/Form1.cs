@@ -154,6 +154,9 @@ namespace Mapping
             //turn the Bitmap into a Graphics object
             Graphics gfx = Graphics.FromImage(bmp);
 
+            gfx.FillRectangle(new SolidBrush(Color.White),
+                new Rectangle(0, 0, bmp.Width, bmp.Height));
+
             //now we set the rotation point to the center of our image
             gfx.TranslateTransform((float)bmp.Width / 2, (float)bmp.Height / 2);
 
