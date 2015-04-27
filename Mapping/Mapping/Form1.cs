@@ -24,6 +24,7 @@ namespace Mapping
         System.Drawing.Point [] pts;
         List<System.Drawing.Point> pixels = new List<System.Drawing.Point>();
         string file;
+        string project_directory = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
 
         public Form1()
         {
@@ -296,6 +297,7 @@ namespace Mapping
                     new SimpleQuadrilateralTransformation(cornersRight, 200, 200);
                 // apply the filter
                 Bitmap newImageRight = filterRight.Apply(new Bitmap(pictureBox1.Image));
+                newImageRight.Save(project_directory + "\\newRight.jpg");
                 pictureBox2.Image = newImageRight;
 
                 /*************** Coupe la partie droite de l'image pour la face BACK du cube ****************/
@@ -309,6 +311,7 @@ namespace Mapping
                     new SimpleQuadrilateralTransformation(cornersBack, 200, 200);
                 // apply the filter
                 Bitmap newImageBack = filterBack.Apply(new Bitmap(pictureBox1.Image));
+                newImageBack.Save(project_directory + "\\newBack.jpg");
                 pictureBox3.Image = newImageBack;
 
                 //CropTriangle();
@@ -318,6 +321,7 @@ namespace Mapping
                 Bitmap source = (Bitmap) pictureBox4.Image;
                 Rectangle section = new Rectangle(new System.Drawing.Point(0, 0), new Size(source.Width/2, source.Height/2));
                 Bitmap CroppedImage = CropImage(source, section);
+                CroppedImage.Save(project_directory + "\\newTop.jpg");
                 pictureBox4.Image = CroppedImage;
             }
         }
