@@ -263,13 +263,29 @@ namespace Mapping
 
         }
 
+
         private void buttonPreview_Click(object sender, EventArgs e)
         {
             if (file != null)
             {
+                /*************** Déforme l'image de pictureBox1 en carré ****************/
+                List<IntPoint> cornersImage = new List<IntPoint>();
+                cornersImage.Add(new IntPoint(0, 0));
+                cornersImage.Add(new IntPoint(pictureBox1.Image.Width, 0));
+                cornersImage.Add(new IntPoint(pictureBox1.Image.Width, pictureBox1.Image.Height));
+                cornersImage.Add(new IntPoint(0, pictureBox1.Image.Height));
+                // create filter
+                SimpleQuadrilateralTransformation filterImage =
+                    new SimpleQuadrilateralTransformation(cornersImage, 400, 400);
+                // apply the filter
+                Bitmap newImage = filterImage.Apply(new Bitmap(pictureBox1.Image));
+                pictureBox1.Image = newImage;
+
+                /*************** Changement de texture ****************/
                 renderControl1.AlterTexture(file);
                 //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
 
+                /*************** Coupe la partie gauche de l'image pour la face RIGHT du cube ****************/
                 List<IntPoint> cornersRight = new List<IntPoint>();
                 cornersRight.Add(new IntPoint(0, 0));
                 cornersRight.Add(new IntPoint(pictureBox1.Image.Width / 2, pictureBox1.Image.Height / 2));
@@ -282,6 +298,7 @@ namespace Mapping
                 Bitmap newImageRight = filterRight.Apply(new Bitmap(pictureBox1.Image));
                 pictureBox2.Image = newImageRight;
 
+                /*************** Coupe la partie droite de l'image pour la face BACK du cube ****************/
                 List<IntPoint> cornersBack = new List<IntPoint>();
                 cornersBack.Add(new IntPoint(pictureBox1.Image.Width / 2, pictureBox1.Image.Height / 2));
                 cornersBack.Add(new IntPoint(pictureBox1.Image.Width, 0));
@@ -296,15 +313,27 @@ namespace Mapping
 
                 //CropTriangle();
                 pictureBox4.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
-
-                //System.Drawing.Point coinDH = new System.Drawing.Point(pictureBox4.Image.Width, 0);
-                //System.Drawing.Point newcoinDH = RotatePoint(-45, coinDH);
-                //Console.WriteLine("X=" + newcoinDH.X + " - "+ " Y=" +newcoinDH.Y);
-
                 pictureBox4.Image = RotateImage(pictureBox4.Image, -45);
-                //pictureBox4.Image = ResizeImage(pictureBox4.Image, new Size(200, 200));
-                //Console.WriteLine("Height=" + pictureBox4.Image.Height);
+
+                Bitmap source = (Bitmap) pictureBox4.Image;
+                Rectangle section = new Rectangle(new System.Drawing.Point(0, 0), new Size(source.Width/2, source.Height/2));
+                Bitmap CroppedImage = CropImage(source, section);
+                pictureBox4.Image = CroppedImage;
             }
+        }
+
+        public Bitmap CropImage(Bitmap source, Rectangle section)
+        {
+            // An empty bitmap which will hold the cropped image
+            Bitmap bmp = new Bitmap(section.Width, section.Height);
+
+            Graphics g = Graphics.FromImage(bmp);
+
+            // Draw the given area (section) of the source image
+            // at location 0,0 on the empty bitmap (bmp)
+            g.DrawImage(source, 0, 0, section, GraphicsUnit.Pixel);
+
+            return bmp;
         }
 
         private void CropTriangle()
