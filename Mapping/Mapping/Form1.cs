@@ -283,7 +283,7 @@ namespace Mapping
                 pictureBox1.Image = newImage;
 
                 /*************** Changement de texture ****************/
-                renderControl1.AlterTexture(file);
+                //renderControl1.AlterTexture(file);
                 //pictureBox1.Image = RotateImage(pictureBox1.Image, -45);
 
                 /*************** Coupe la partie gauche de l'image pour la face RIGHT du cube ****************/
@@ -323,6 +323,12 @@ namespace Mapping
                 Bitmap CroppedImage = CropImage(source, section);
                 CroppedImage.Save(project_directory + "\\newTop.jpg");
                 pictureBox4.Image = CroppedImage;
+
+                /*************** Changement de texture ****************/
+                renderControl1.AlterTextureTop(project_directory + "\\newTop.jpg");
+                renderControl1.AlterTextureBack(project_directory + "\\newBack.jpg");
+                renderControl1.AlterTextureRight(project_directory + "\\newRight.jpg");
+
             }
         }
 

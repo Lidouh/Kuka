@@ -108,6 +108,24 @@ namespace Mapping
         
         }
 
+        public void AlterTextureTop(string file)
+        {
+            var textureTop = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            textureViewTop = new ShaderResourceView(AppDevice, textureTop);
+        }
+
+        public void AlterTextureBack(string file)
+        {
+            var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            textureViewBack = new ShaderResourceView(AppDevice, textureBack);
+        }
+
+        public void AlterTextureRight(string file)
+        {
+            var textureRight = Texture2D.FromFile<Texture2D>(AppDevice, file);
+            textureViewRight = new ShaderResourceView(AppDevice, textureRight);
+        }
+
         public void ReinitTexture()
         {
             var textureBack = Texture2D.FromFile<Texture2D>(AppDevice, project_directory + "\\back.jpg");
