@@ -21,8 +21,10 @@ namespace Mapping
 {
     public partial class Form1 : Form
     {
-        System.Drawing.Point [] pts;
-        List<System.Drawing.Point> pixels = new List<System.Drawing.Point>();
+        List<System.Drawing.Point> listPix = new List<System.Drawing.Point>();
+        List<System.Drawing.Point> listPixTop = new List<System.Drawing.Point>();
+        List<System.Drawing.Point> listPixBack = new List<System.Drawing.Point>();
+        List<System.Drawing.Point> listPixRight = new List<System.Drawing.Point>();
         string file;
         string project_directory = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
 
@@ -88,12 +90,12 @@ namespace Mapping
                         color.Draw(currentContour.BoundingRectangle, new Bgr(0, 255, 0), 1);
                     }
 
-                    pts = currentContour.ToArray();
+                    System.Drawing.Point[] pts = currentContour.ToArray();
                     foreach (System.Drawing.Point p in pts)
                     {
                         //add points to listbox
                         listBox1.Items.Add(p);
-                        pixels.Add(p);
+                        listPix.Add(p);
                     }
                 }
             }
@@ -103,7 +105,45 @@ namespace Mapping
 
         }
 
-        //not used
+
+        public void IdentifyContoursList
+            (Bitmap colorImage, int thresholdValue, bool invert,
+            out Bitmap processedGray, out Bitmap processedColor,
+            ListBox listB, List<System.Drawing.Point> listP)
+        {
+            Image<Gray, byte> grayImage = new Image<Gray, byte>(colorImage);
+            Image<Bgr, byte> color = new Image<Bgr, byte>(colorImage);
+            grayImage = grayImage.ThresholdBinary(new Gray(thresholdValue), new Gray(255));
+
+            if (invert){ grayImage._Not(); }
+
+            using (MemStorage storage = new MemStorage())
+            {
+                for (Contour<System.Drawing.Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
+                {
+                    Contour<System.Drawing.Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
+                    //Contour<Point> currentContour = contours;
+                    if (currentContour.BoundingRectangle.Width > 20)
+                    {
+                        CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new System.Drawing.Point(0, 0));
+                        color.Draw(currentContour.BoundingRectangle, new Bgr(0, 255, 0), 1);
+                    }
+
+                    System.Drawing.Point [] pts = currentContour.ToArray();
+                    foreach (System.Drawing.Point p in pts)
+                    {
+                        //add points to listbox and list
+                        listB.Items.Add(p);
+                        listP.Add(p);
+                    }
+                }
+            }
+
+            processedColor = color.ToBitmap();
+            processedGray = grayImage.ToBitmap();
+        }
+
+
         public Image RotateImage(Image img, float rotationAngle)
         {
             //create an empty Bitmap image
@@ -133,27 +173,11 @@ namespace Mapping
             //dispose of our Graphics object
             gfx.Dispose();
 
-            //float x = 0 ;
-            //float y = 0 ;
-            //float cx = img.Width / 2; float cy = img.Height / 2;
-            //// translate point to origin
-            //float tempX = x - cx;
-            //float tempY = y - cy;
-
-            //// now apply rotation
-            //float rotatedX = tempX * (float)Math.Cos(rotationAngle) - tempY * (float) Math.Sin(rotationAngle);
-            //float rotatedY = tempX * (float)Math.Sin(rotationAngle) + tempY * (float) Math.Cos(rotationAngle);
-
-            //// translate back
-            //x = rotatedX + cx + (hypotenuse - img.Width) / 2;
-            //y = rotatedY + cy + (hypotenuse - img.Height) / 2;
-
-            //Console.WriteLine("X=" + x + " - " + " Y=" + y);
-
             //return the image
             return bmp;
         }
 
+        //not used
         public static System.Drawing.Point RotatePoint(float angle, System.Drawing.Point pt)
         {
             var a = angle * System.Math.PI / 180.0;
@@ -165,7 +189,6 @@ namespace Mapping
             return newPoint;
         }
 
-        //not used
         public Image ResizeImage(Image imgToResize, Size size)
         {
             int sourceWidth = imgToResize.Width;
@@ -199,41 +222,41 @@ namespace Mapping
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Bitmap bmp = new Bitmap(pictureBox1.Image);
-            if (pixels[listBox1.SelectedIndex].X < bmp.Width - 2 && pixels[listBox1.SelectedIndex].X > 2
-                && pixels[listBox1.SelectedIndex].Y < bmp.Height - 2 && pixels[listBox1.SelectedIndex].Y > 22)
+            if (listPix[listBox1.SelectedIndex].X < bmp.Width - 2 && listPix[listBox1.SelectedIndex].X > 2
+                && listPix[listBox1.SelectedIndex].Y < bmp.Height - 2 && listPix[listBox1.SelectedIndex].Y > 22)
             {
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X, listPix[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X, listPix[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X, listPix[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X, listPix[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X, listPix[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 1, listPix[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 1, listPix[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 1, listPix[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 1, listPix[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 1, listPix[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 1, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 1, listPix[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 1, listPix[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 1, listPix[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 1, listPix[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 1, listPix[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X + 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 2, listPix[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 2, listPix[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 2, listPix[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 2, listPix[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X + 2, listPix[listBox1.SelectedIndex].Y - 2, Color.Black);
 
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 1, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y + 2, Color.Black);
-                bmp.SetPixel(pixels[listBox1.SelectedIndex].X - 2, pixels[listBox1.SelectedIndex].Y - 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 2, listPix[listBox1.SelectedIndex].Y, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 2, listPix[listBox1.SelectedIndex].Y + 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 2, listPix[listBox1.SelectedIndex].Y - 1, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 2, listPix[listBox1.SelectedIndex].Y + 2, Color.Black);
+                bmp.SetPixel(listPix[listBox1.SelectedIndex].X - 2, listPix[listBox1.SelectedIndex].Y - 2, Color.Black);
 
                 pictureBox1.Image = bmp;
-                Console.WriteLine(pixels[listBox1.SelectedIndex].X + " , " + pixels[listBox1.SelectedIndex].Y);
+                Console.WriteLine(listPix[listBox1.SelectedIndex].X + " , " + listPix[listBox1.SelectedIndex].Y);
             }
         }
 
@@ -241,7 +264,7 @@ namespace Mapping
         {
             if (pictureBox1.Image != null)
             {
-                pixels.Clear();
+                listPix.Clear();
                 listBox1.Items.Clear();
                 Bitmap bmp = new Bitmap(pictureBox1.Image);
                 Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
@@ -298,7 +321,7 @@ namespace Mapping
                 // apply the filter
                 Bitmap newImageRight = filterRight.Apply(new Bitmap(pictureBox1.Image));
                 newImageRight.Save(project_directory + "\\newRight.jpg");
-                pictureBox2.Image = newImageRight;
+                pictureBoxRight.Image = newImageRight;
 
                 /*************** Coupe la partie droite de l'image pour la face BACK du cube ****************/
                 List<IntPoint> cornersBack = new List<IntPoint>();
@@ -312,17 +335,17 @@ namespace Mapping
                 // apply the filter
                 Bitmap newImageBack = filterBack.Apply(new Bitmap(pictureBox1.Image));
                 newImageBack.Save(project_directory + "\\newBack.jpg");
-                pictureBox3.Image = newImageBack;
+                pictureBoxBack.Image = newImageBack;
 
                 //CropTriangle();
-                pictureBox4.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
-                pictureBox4.Image = RotateImage(pictureBox4.Image, -45);
+                pictureBoxTop.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
+                pictureBoxTop.Image = RotateImage(pictureBoxTop.Image, -45);
 
-                Bitmap source = (Bitmap) pictureBox4.Image;
+                Bitmap source = (Bitmap) pictureBoxTop.Image;
                 Rectangle section = new Rectangle(new System.Drawing.Point(0, 0), new Size(source.Width/2, source.Height/2));
                 Bitmap CroppedImage = CropImage(source, section);
                 CroppedImage.Save(project_directory + "\\newTop.jpg");
-                pictureBox4.Image = CroppedImage;
+                pictureBoxTop.Image = CroppedImage;
 
                 /*************** Changement de texture ****************/
                 renderControl1.AlterTextureTop(project_directory + "\\newTop.jpg");
@@ -346,6 +369,7 @@ namespace Mapping
             return bmp;
         }
 
+        //not used
         private void CropTriangle()
         {
             // create a graphic path to hold the shape data
@@ -373,7 +397,7 @@ namespace Mapping
             // draw the image cliped to the custom shape
             graph.DrawImage(pictureBox1.Image, new System.Drawing.Point(0, 0));
             //pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox4.Image = bmp;
+            pictureBoxTop.Image = bmp;
             //pictureBox4.Image = RotateImage(pictureBox4.Image, -45);
 
         }
@@ -381,6 +405,99 @@ namespace Mapping
         private void buttonReinit_Click(object sender, EventArgs e)
         {
             renderControl1.ReinitTexture();
+        }
+
+        private void buttonCoordBack_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxBack.Image != null)
+            {
+                listPixBack.Clear();
+                listBoxBack.Items.Clear();
+                Bitmap bmp = new Bitmap(pictureBoxBack.Image);
+                Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
+
+                Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
+
+                Gray cannyThreshold = new Gray(80);
+                Gray cannyThresholdLinking = new Gray(120);
+                Gray circleAccumulatorThreshold = new Gray(120);
+
+                Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
+
+                Bitmap color;
+                Bitmap bgray;
+                IdentifyContoursList(cannyEdges.Bitmap, 50, true, out bgray, out color, listBoxBack, listPixBack);
+
+                pictureBoxBack.Image = color;
+            }
+
+        }
+
+        private void buttonCoordRight_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxRight.Image != null)
+            {
+                listPixRight.Clear();
+                listBoxRight.Items.Clear();
+                Bitmap bmp = new Bitmap(pictureBoxRight.Image);
+                Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
+
+                Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
+
+                Gray cannyThreshold = new Gray(80);
+                Gray cannyThresholdLinking = new Gray(120);
+                Gray circleAccumulatorThreshold = new Gray(120);
+
+                Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
+
+                Bitmap color;
+                Bitmap bgray;
+                IdentifyContoursList(cannyEdges.Bitmap, 50, true, out bgray, out color, listBoxRight, listPixRight);
+
+                pictureBoxRight.Image = color;
+            }
+
+        }
+
+        private void buttonCoordTop_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxTop.Image != null)
+            {
+                listPixTop.Clear();
+                listBoxTop.Items.Clear();
+                Bitmap bmp = new Bitmap(pictureBoxTop.Image);
+                Image<Bgr, Byte> img = new Image<Bgr, byte>(bmp);
+
+                Image<Gray, Byte> gray = img.Convert<Gray, Byte>().PyrDown().PyrUp();
+
+                Gray cannyThreshold = new Gray(80);
+                Gray cannyThresholdLinking = new Gray(120);
+                Gray circleAccumulatorThreshold = new Gray(120);
+
+                Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold, cannyThresholdLinking).Not();
+
+                Bitmap color;
+                Bitmap bgray;
+                IdentifyContoursList(cannyEdges.Bitmap, 50, true, out bgray, out color, listBoxTop, listPixTop);
+
+                pictureBoxTop.Image = color;
+            }
+
+        }
+
+        private void listBoxBack_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxRight_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxTop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
 
