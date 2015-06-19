@@ -43,10 +43,11 @@
             this.listBoxRight = new System.Windows.Forms.ListBox();
             this.listBoxBack = new System.Windows.Forms.ListBox();
             this.listBoxTop = new System.Windows.Forms.ListBox();
-            this.renderControl1 = new Mapping.RenderControl();
             this.buttonCoordBack = new System.Windows.Forms.Button();
             this.buttonCoordRight = new System.Windows.Forms.Button();
             this.buttonCoordTop = new System.Windows.Forms.Button();
+            this.renderControl1 = new Mapping.RenderControl();
+            this.buttonPrint = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBack)).BeginInit();
@@ -194,14 +195,6 @@
             this.listBoxTop.TabIndex = 15;
             this.listBoxTop.SelectedIndexChanged += new System.EventHandler(this.listBoxTop_SelectedIndexChanged);
             // 
-            // renderControl1
-            // 
-            this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.renderControl1.Location = new System.Drawing.Point(12, 12);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Size = new System.Drawing.Size(340, 340);
-            this.renderControl1.TabIndex = 0;
-            // 
             // buttonCoordBack
             // 
             this.buttonCoordBack.Location = new System.Drawing.Point(771, 361);
@@ -232,11 +225,30 @@
             this.buttonCoordTop.UseVisualStyleBackColor = true;
             this.buttonCoordTop.Click += new System.EventHandler(this.buttonCoordTop_Click);
             // 
+            // renderControl1
+            // 
+            this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.renderControl1.Location = new System.Drawing.Point(12, 12);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Size = new System.Drawing.Size(340, 340);
+            this.renderControl1.TabIndex = 0;
+            // 
+            // buttonPrint
+            // 
+            this.buttonPrint.Location = new System.Drawing.Point(153, 411);
+            this.buttonPrint.Name = "buttonPrint";
+            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrint.TabIndex = 19;
+            this.buttonPrint.Text = "Imprimer";
+            this.buttonPrint.UseVisualStyleBackColor = true;
+            this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1271, 716);
+            this.Controls.Add(this.buttonPrint);
             this.Controls.Add(this.buttonCoordTop);
             this.Controls.Add(this.buttonCoordRight);
             this.Controls.Add(this.buttonCoordBack);
@@ -289,6 +301,7 @@
         private System.Windows.Forms.Button buttonCoordBack;
         private System.Windows.Forms.Button buttonCoordRight;
         private System.Windows.Forms.Button buttonCoordTop;
+        private System.Windows.Forms.Button buttonPrint;
     }
 }
 

@@ -16,6 +16,7 @@ using System.Collections;
 using System.IO;
 using AForge.Imaging.Filters;
 using AForge;
+using System.Drawing.Printing;
 
 namespace Mapping
 {
@@ -27,6 +28,8 @@ namespace Mapping
         List<System.Drawing.Point> listPixRight = new List<System.Drawing.Point>();
         string file;
         string project_directory = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
+        private PrintDocument pd;
+
 
         public Form1()
         {
@@ -34,6 +37,15 @@ namespace Mapping
             this.Text = "Virtual Mapping";
             //pictureBox1.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
             //Image<Bgr, Byte> image = new Image<Bgr, byte>(100, 100);
+            this.pd = new PrintDocument();
+            this.pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+        }
+
+        void pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            //e.Graphics.DrawImage(pictureBox1.Image, pictureBox1.Bounds);
+            e.Graphics.DrawImage(pictureBox1.Image, e.MarginBounds);
+            //e.Graphics.DrawImage(pictureBox1.Image, 0,0, pictureBox1.Image.Width, pictureBox1.Image.Height);
         }
 
         public void Render()
@@ -122,7 +134,7 @@ namespace Mapping
                 for (Contour<System.Drawing.Point> contours = grayImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST, storage); contours != null; contours = contours.HNext)
                 {
                     Contour<System.Drawing.Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.015, storage);
-                    //Contour<Point> currentContour = contours;
+                    //Contour<System.Drawing.Point> currentContour = contours;
                     if (currentContour.BoundingRectangle.Width > 20)
                     {
                         CvInvoke.cvDrawContours(color, contours, new MCvScalar(255), new MCvScalar(255), -1, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new System.Drawing.Point(0, 0));
@@ -340,6 +352,7 @@ namespace Mapping
                 newImageBack.Save(project_directory + "\\newBack.jpg");
                 pictureBoxBack.Image = newImageBack;
 
+                /**************** Coupe la partie haute de l'image pour la face TOP du cube ***************/
                 //CropTriangle();
                 pictureBoxTop.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
                 pictureBoxTop.Image = RotateImage(pictureBoxTop.Image, -45);
@@ -542,6 +555,14 @@ namespace Mapping
         private void listBoxTop_SelectedIndexChanged(object sender, EventArgs e)
         {
             settingPixels(pictureBoxTop, listBoxTop, listPixTop);
+        }
+
+        private void buttonPrint_Click(object sender, EventArgs e)
+        {
+            PrintPreviewDialog print1 = new PrintPreviewDialog();
+            print1.Document = this.pd;
+            if (print1.ShowDialog() == DialogResult.OK)
+            { pd.Print(); }
         }
 
 
