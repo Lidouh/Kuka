@@ -29,6 +29,7 @@ namespace Mapping
         string file;
         string project_directory = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
         private PrintDocument pd;
+        Image imgToPrint;
 
 
         public Form1()
@@ -44,8 +45,36 @@ namespace Mapping
         void pd_PrintPage(object sender, PrintPageEventArgs e)
         {
             //e.Graphics.DrawImage(pictureBox1.Image, pictureBox1.Bounds);
-            e.Graphics.DrawImage(pictureBox1.Image, e.MarginBounds);
+            //e.Graphics.DrawImage(pictureBox1.Image, e.MarginBounds);
             //e.Graphics.DrawImage(pictureBox1.Image, 0,0, pictureBox1.Image.Width, pictureBox1.Image.Height);
+
+            Graphics g = e.Graphics;
+            g.PageUnit = GraphicsUnit.Inch;
+
+            //Image img = pictureBox1.Image;
+            Image img = imgToPrint;
+            Graphics gg = Graphics.FromImage(img);
+
+
+            RectangleF marginBounds = e.MarginBounds;
+            if (!pd.PrintController.IsPreview)
+                marginBounds.Offset(-e.PageSettings.HardMarginX,
+                                -e.PageSettings.HardMarginY);
+
+            float x = marginBounds.X / 100f +
+                            (marginBounds.Width / 100f -
+                                (float)img.Width / gg.DpiX) / 2f;
+            float y = marginBounds.Y / 100f +
+                            (marginBounds.Height / 100f -
+                                (float)img.Height / gg.DpiY) / 2f;
+
+
+
+            g.DrawImage(img, x, y);
+
+            //Don't call g.Dispose(). Operating System will do this job.
+            gg.Dispose();//You should call it to release graphics object immediately.
+
         }
 
         public void Render()
@@ -557,9 +586,36 @@ namespace Mapping
             settingPixels(pictureBoxTop, listBoxTop, listPixTop);
         }
 
+        public static void CopyRegionIntoImage(Bitmap srcBitmap, Rectangle srcRegion, Bitmap destBitmap, Rectangle destRegion)
+        {
+            using (Graphics grD = Graphics.FromImage(destBitmap))
+            {
+                grD.DrawImage(srcBitmap, destRegion, srcRegion, GraphicsUnit.Pixel);
+            }
+        }
+
         private void buttonPrint_Click(object sender, EventArgs e)
         {
+            imgToPrint = Image.FromFile( project_directory+ "\\cross.png") ;
+            Image imgToPastTop = Image.FromFile(project_directory + "\\newTop.jpg");
+            Image imgToPastRight = Image.FromFile(project_directory + "\\newRight.jpg");
+            Image imgToPastBack = Image.FromFile(project_directory + "\\newBack.jpg");
+
+            Rectangle regionSrcTop = new Rectangle(new System.Drawing.Point(0, 0), new Size(imgToPastTop.Width, imgToPastTop.Height));
+            Rectangle regionSrcRight = new Rectangle(new System.Drawing.Point(0, 0), new Size(imgToPastRight.Width, imgToPastRight.Height));
+            Rectangle regionSrcBack = new Rectangle(new System.Drawing.Point(0, 0), new Size(imgToPastBack.Width, imgToPastBack.Height));
+            
+            Rectangle regionDestTop = new Rectangle(new System.Drawing.Point(202, 1), new Size(200, 200));
+            Rectangle regionDestRight = new Rectangle(new System.Drawing.Point(202, 202), new Size(200, 200));
+            Rectangle regionDestBack = new Rectangle(new System.Drawing.Point(403, 202), new Size(200, 200));
+
+            CopyRegionIntoImage((Bitmap)imgToPastTop, regionSrcTop, (Bitmap)imgToPrint, regionDestTop);
+            CopyRegionIntoImage((Bitmap)imgToPastRight, regionSrcRight, (Bitmap)imgToPrint, regionDestRight);
+            CopyRegionIntoImage((Bitmap)imgToPastBack, regionSrcBack, (Bitmap)imgToPrint, regionDestBack);
+
+
             PrintPreviewDialog print1 = new PrintPreviewDialog();
+            //PrintDialog print1 = new PrintDialog();
             print1.Document = this.pd;
             if (print1.ShowDialog() == DialogResult.OK)
             { pd.Print(); }
