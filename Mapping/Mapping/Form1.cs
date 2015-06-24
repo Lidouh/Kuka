@@ -614,8 +614,8 @@ namespace Mapping
             CopyRegionIntoImage((Bitmap)imgToPastBack, regionSrcBack, (Bitmap)imgToPrint, regionDestBack);
 
 
-            PrintPreviewDialog print1 = new PrintPreviewDialog();
-            //PrintDialog print1 = new PrintDialog();
+            //PrintPreviewDialog print1 = new PrintPreviewDialog();
+            PrintDialog print1 = new PrintDialog();
             print1.Document = this.pd;
             if (print1.ShowDialog() == DialogResult.OK)
             { pd.Print(); }

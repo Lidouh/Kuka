@@ -46,8 +46,8 @@
             this.buttonCoordBack = new System.Windows.Forms.Button();
             this.buttonCoordRight = new System.Windows.Forms.Button();
             this.buttonCoordTop = new System.Windows.Forms.Button();
-            this.renderControl1 = new Mapping.RenderControl();
             this.buttonPrint = new System.Windows.Forms.Button();
+            this.renderControl1 = new Mapping.RenderControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBack)).BeginInit();
@@ -56,7 +56,7 @@
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(1061, 358);
+            this.buttonBrowse.Location = new System.Drawing.Point(561, 380);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowse.TabIndex = 1;
@@ -67,7 +67,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(919, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(419, 34);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(340, 340);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -77,15 +77,16 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(1134, 411);
+            this.listBox1.Location = new System.Drawing.Point(1147, 504);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(125, 264);
+            this.listBox1.Size = new System.Drawing.Size(125, 134);
             this.listBox1.TabIndex = 3;
+            this.listBox1.Visible = false;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // buttonPreview
             // 
-            this.buttonPreview.Location = new System.Drawing.Point(199, 358);
+            this.buttonPreview.Location = new System.Drawing.Point(277, 380);
             this.buttonPreview.Name = "buttonPreview";
             this.buttonPreview.Size = new System.Drawing.Size(75, 23);
             this.buttonPreview.TabIndex = 4;
@@ -95,17 +96,18 @@
             // 
             // buttonCoordinates
             // 
-            this.buttonCoordinates.Location = new System.Drawing.Point(1134, 681);
+            this.buttonCoordinates.Location = new System.Drawing.Point(1147, 644);
             this.buttonCoordinates.Name = "buttonCoordinates";
             this.buttonCoordinates.Size = new System.Drawing.Size(125, 23);
             this.buttonCoordinates.TabIndex = 5;
             this.buttonCoordinates.Text = "Coordonnées";
             this.buttonCoordinates.UseVisualStyleBackColor = true;
+            this.buttonCoordinates.Visible = false;
             this.buttonCoordinates.Click += new System.EventHandler(this.buttonCoordinates_Click);
             // 
             // buttonReinit
             // 
-            this.buttonReinit.Location = new System.Drawing.Point(82, 358);
+            this.buttonReinit.Location = new System.Drawing.Point(12, 380);
             this.buttonReinit.Name = "buttonReinit";
             this.buttonReinit.Size = new System.Drawing.Size(75, 23);
             this.buttonReinit.TabIndex = 6;
@@ -116,126 +118,130 @@
             // pictureBoxRight
             // 
             this.pictureBoxRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBoxRight.Location = new System.Drawing.Point(543, 496);
+            this.pictureBoxRight.Location = new System.Drawing.Point(224, 504);
             this.pictureBoxRight.Name = "pictureBoxRight";
             this.pictureBoxRight.Size = new System.Drawing.Size(200, 200);
             this.pictureBoxRight.TabIndex = 7;
             this.pictureBoxRight.TabStop = false;
+            this.pictureBoxRight.Visible = false;
             // 
             // pictureBoxBack
             // 
             this.pictureBoxBack.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBoxBack.Location = new System.Drawing.Point(749, 496);
+            this.pictureBoxBack.Location = new System.Drawing.Point(430, 504);
             this.pictureBoxBack.Name = "pictureBoxBack";
             this.pictureBoxBack.Size = new System.Drawing.Size(200, 200);
             this.pictureBoxBack.TabIndex = 8;
             this.pictureBoxBack.TabStop = false;
+            this.pictureBoxBack.Visible = false;
             // 
             // pictureBoxTop
             // 
             this.pictureBoxTop.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBoxTop.Location = new System.Drawing.Point(337, 496);
+            this.pictureBoxTop.Location = new System.Drawing.Point(18, 504);
             this.pictureBoxTop.Name = "pictureBoxTop";
             this.pictureBoxTop.Size = new System.Drawing.Size(200, 200);
             this.pictureBoxTop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxTop.TabIndex = 9;
             this.pictureBoxTop.TabStop = false;
+            this.pictureBoxTop.Visible = false;
             // 
             // labelTop
             // 
             this.labelTop.AutoSize = true;
-            this.labelTop.Location = new System.Drawing.Point(334, 480);
+            this.labelTop.Location = new System.Drawing.Point(15, 488);
             this.labelTop.Name = "labelTop";
             this.labelTop.Size = new System.Drawing.Size(26, 13);
             this.labelTop.TabIndex = 10;
             this.labelTop.Text = "Top";
+            this.labelTop.Visible = false;
             // 
             // labelRight
             // 
             this.labelRight.AutoSize = true;
-            this.labelRight.Location = new System.Drawing.Point(540, 480);
+            this.labelRight.Location = new System.Drawing.Point(221, 488);
             this.labelRight.Name = "labelRight";
             this.labelRight.Size = new System.Drawing.Size(32, 13);
             this.labelRight.TabIndex = 11;
             this.labelRight.Text = "Right";
+            this.labelRight.Visible = false;
             // 
             // labelBack
             // 
             this.labelBack.AutoSize = true;
-            this.labelBack.Location = new System.Drawing.Point(746, 480);
+            this.labelBack.Location = new System.Drawing.Point(427, 488);
             this.labelBack.Name = "labelBack";
             this.labelBack.Size = new System.Drawing.Size(32, 13);
             this.labelBack.TabIndex = 12;
             this.labelBack.Text = "Back";
+            this.labelBack.Visible = false;
             // 
             // listBoxRight
             // 
             this.listBoxRight.FormattingEnabled = true;
-            this.listBoxRight.Location = new System.Drawing.Point(590, 13);
+            this.listBoxRight.Location = new System.Drawing.Point(832, 504);
             this.listBoxRight.Name = "listBoxRight";
-            this.listBoxRight.Size = new System.Drawing.Size(120, 342);
+            this.listBoxRight.Size = new System.Drawing.Size(120, 147);
             this.listBoxRight.TabIndex = 13;
+            this.listBoxRight.Visible = false;
             this.listBoxRight.SelectedIndexChanged += new System.EventHandler(this.listBoxRight_SelectedIndexChanged);
             // 
             // listBoxBack
             // 
             this.listBoxBack.FormattingEnabled = true;
-            this.listBoxBack.Location = new System.Drawing.Point(749, 13);
+            this.listBoxBack.Location = new System.Drawing.Point(991, 504);
             this.listBoxBack.Name = "listBoxBack";
-            this.listBoxBack.Size = new System.Drawing.Size(120, 342);
+            this.listBoxBack.Size = new System.Drawing.Size(120, 147);
             this.listBoxBack.TabIndex = 14;
+            this.listBoxBack.Visible = false;
             this.listBoxBack.SelectedIndexChanged += new System.EventHandler(this.listBoxBack_SelectedIndexChanged);
             // 
             // listBoxTop
             // 
             this.listBoxTop.FormattingEnabled = true;
-            this.listBoxTop.Location = new System.Drawing.Point(417, 13);
+            this.listBoxTop.Location = new System.Drawing.Point(659, 504);
             this.listBoxTop.Name = "listBoxTop";
-            this.listBoxTop.Size = new System.Drawing.Size(120, 342);
+            this.listBoxTop.Size = new System.Drawing.Size(120, 147);
             this.listBoxTop.TabIndex = 15;
+            this.listBoxTop.Visible = false;
             this.listBoxTop.SelectedIndexChanged += new System.EventHandler(this.listBoxTop_SelectedIndexChanged);
             // 
             // buttonCoordBack
             // 
-            this.buttonCoordBack.Location = new System.Drawing.Point(771, 361);
+            this.buttonCoordBack.Location = new System.Drawing.Point(1009, 657);
             this.buttonCoordBack.Name = "buttonCoordBack";
             this.buttonCoordBack.Size = new System.Drawing.Size(75, 23);
             this.buttonCoordBack.TabIndex = 16;
             this.buttonCoordBack.Text = "CoordBack";
             this.buttonCoordBack.UseVisualStyleBackColor = true;
+            this.buttonCoordBack.Visible = false;
             this.buttonCoordBack.Click += new System.EventHandler(this.buttonCoordBack_Click);
             // 
             // buttonCoordRight
             // 
-            this.buttonCoordRight.Location = new System.Drawing.Point(612, 361);
+            this.buttonCoordRight.Location = new System.Drawing.Point(855, 657);
             this.buttonCoordRight.Name = "buttonCoordRight";
             this.buttonCoordRight.Size = new System.Drawing.Size(75, 23);
             this.buttonCoordRight.TabIndex = 17;
             this.buttonCoordRight.Text = "CoordRight";
             this.buttonCoordRight.UseVisualStyleBackColor = true;
+            this.buttonCoordRight.Visible = false;
             this.buttonCoordRight.Click += new System.EventHandler(this.buttonCoordRight_Click);
             // 
             // buttonCoordTop
             // 
-            this.buttonCoordTop.Location = new System.Drawing.Point(441, 361);
+            this.buttonCoordTop.Location = new System.Drawing.Point(684, 657);
             this.buttonCoordTop.Name = "buttonCoordTop";
             this.buttonCoordTop.Size = new System.Drawing.Size(75, 23);
             this.buttonCoordTop.TabIndex = 18;
             this.buttonCoordTop.Text = "CoordTop";
             this.buttonCoordTop.UseVisualStyleBackColor = true;
+            this.buttonCoordTop.Visible = false;
             this.buttonCoordTop.Click += new System.EventHandler(this.buttonCoordTop_Click);
-            // 
-            // renderControl1
-            // 
-            this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.renderControl1.Location = new System.Drawing.Point(12, 12);
-            this.renderControl1.Name = "renderControl1";
-            this.renderControl1.Size = new System.Drawing.Size(340, 340);
-            this.renderControl1.TabIndex = 0;
             // 
             // buttonPrint
             // 
-            this.buttonPrint.Location = new System.Drawing.Point(153, 411);
+            this.buttonPrint.Location = new System.Drawing.Point(143, 383);
             this.buttonPrint.Name = "buttonPrint";
             this.buttonPrint.Size = new System.Drawing.Size(75, 23);
             this.buttonPrint.TabIndex = 19;
@@ -243,11 +249,19 @@
             this.buttonPrint.UseVisualStyleBackColor = true;
             this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
             // 
+            // renderControl1
+            // 
+            this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.renderControl1.Location = new System.Drawing.Point(12, 34);
+            this.renderControl1.Name = "renderControl1";
+            this.renderControl1.Size = new System.Drawing.Size(340, 340);
+            this.renderControl1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1271, 716);
+            this.ClientSize = new System.Drawing.Size(833, 438);
             this.Controls.Add(this.buttonPrint);
             this.Controls.Add(this.buttonCoordTop);
             this.Controls.Add(this.buttonCoordRight);
