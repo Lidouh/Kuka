@@ -46,8 +46,8 @@
             this.buttonCoordBack = new System.Windows.Forms.Button();
             this.buttonCoordRight = new System.Windows.Forms.Button();
             this.buttonCoordTop = new System.Windows.Forms.Button();
-            this.renderControl1 = new Mapping.RenderControl();
             this.buttonPrint = new System.Windows.Forms.Button();
+            this.renderControl1 = new Mapping.RenderControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBack)).BeginInit();
@@ -85,7 +85,7 @@
             // 
             // buttonPreview
             // 
-            this.buttonPreview.Location = new System.Drawing.Point(199, 358);
+            this.buttonPreview.Location = new System.Drawing.Point(277, 358);
             this.buttonPreview.Name = "buttonPreview";
             this.buttonPreview.Size = new System.Drawing.Size(75, 23);
             this.buttonPreview.TabIndex = 4;
@@ -105,7 +105,7 @@
             // 
             // buttonReinit
             // 
-            this.buttonReinit.Location = new System.Drawing.Point(82, 358);
+            this.buttonReinit.Location = new System.Drawing.Point(12, 358);
             this.buttonReinit.Name = "buttonReinit";
             this.buttonReinit.Size = new System.Drawing.Size(75, 23);
             this.buttonReinit.TabIndex = 6;
@@ -225,6 +225,16 @@
             this.buttonCoordTop.UseVisualStyleBackColor = true;
             this.buttonCoordTop.Click += new System.EventHandler(this.buttonCoordTop_Click);
             // 
+            // buttonPrint
+            // 
+            this.buttonPrint.Location = new System.Drawing.Point(146, 358);
+            this.buttonPrint.Name = "buttonPrint";
+            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrint.TabIndex = 19;
+            this.buttonPrint.Text = "Imprimer";
+            this.buttonPrint.UseVisualStyleBackColor = true;
+            this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
+            // 
             // renderControl1
             // 
             this.renderControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -232,16 +242,6 @@
             this.renderControl1.Name = "renderControl1";
             this.renderControl1.Size = new System.Drawing.Size(340, 340);
             this.renderControl1.TabIndex = 0;
-            // 
-            // buttonPrint
-            // 
-            this.buttonPrint.Location = new System.Drawing.Point(153, 411);
-            this.buttonPrint.Name = "buttonPrint";
-            this.buttonPrint.Size = new System.Drawing.Size(75, 23);
-            this.buttonPrint.TabIndex = 19;
-            this.buttonPrint.Text = "Imprimer";
-            this.buttonPrint.UseVisualStyleBackColor = true;
-            this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
             // 
             // Form1
             // 

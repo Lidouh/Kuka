@@ -530,11 +530,21 @@ namespace Mapping
 
         }
 
+        private void verifySetPixels(PictureBox pictureB, int x, int y)
+        {
+            Bitmap bmp = new Bitmap(pictureB.Image);
+            if (x < bmp.Width && x > 0 && y < bmp.Height && y > 0)
+            {
+                bmp.SetPixel(x, y, Color.Black);
+            }
+
+        }
+
         private void settingPixels(PictureBox pictureB, ListBox listB, List<System.Drawing.Point> listP)
         {
             Bitmap bmp = new Bitmap(pictureB.Image);
             if (listP[listB.SelectedIndex].X < bmp.Width - 2 && listP[listB.SelectedIndex].X > 2
-                && listP[listB.SelectedIndex].Y < bmp.Height - 2 && listP[listB.SelectedIndex].Y > 22)
+                && listP[listB.SelectedIndex].Y < bmp.Height - 2 && listP[listB.SelectedIndex].Y > 2)
             {
                 bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y, Color.Black);
                 bmp.SetPixel(listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y + 1, Color.Black);
