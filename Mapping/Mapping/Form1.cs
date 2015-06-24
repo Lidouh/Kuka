@@ -385,7 +385,7 @@ namespace Mapping
                 //CropTriangle();
                 pictureBoxTop.Image = ResizeImage(pictureBox1.Image, new Size(200, 200));
                 pictureBoxTop.Image = RotateImage(pictureBoxTop.Image, -45);
-
+                pictureBoxTop.Image = ResizeImage(pictureBoxTop.Image, new Size(400, 400));
                 Bitmap source = (Bitmap) pictureBoxTop.Image;
                 Rectangle section = new Rectangle(new System.Drawing.Point(0, 0), new Size(source.Width/2, source.Height/2));
                 Bitmap CroppedImage = CropImage(source, section);
@@ -536,6 +536,7 @@ namespace Mapping
             if (x < bmp.Width && x > 0 && y < bmp.Height && y > 0)
             {
                 bmp.SetPixel(x, y, Color.Black);
+                pictureB.Image = bmp;
             }
 
         }
@@ -543,6 +544,36 @@ namespace Mapping
         private void settingPixels(PictureBox pictureB, ListBox listB, List<System.Drawing.Point> listP)
         {
             Bitmap bmp = new Bitmap(pictureB.Image);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y + 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y - 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y + 2);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X, listP[listB.SelectedIndex].Y - 2);
+
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y + 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y - 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y + 2);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 1, listP[listB.SelectedIndex].Y - 2);
+
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y + 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y - 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y + 2);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 1, listP[listB.SelectedIndex].Y - 2);
+
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y + 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y - 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y + 2);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X + 2, listP[listB.SelectedIndex].Y - 2);
+
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y + 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y - 1);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y + 2);
+            verifySetPixels(pictureB, listP[listB.SelectedIndex].X - 2, listP[listB.SelectedIndex].Y - 2);
+            /*
             if (listP[listB.SelectedIndex].X < bmp.Width - 2 && listP[listB.SelectedIndex].X > 2
                 && listP[listB.SelectedIndex].Y < bmp.Height - 2 && listP[listB.SelectedIndex].Y > 2)
             {
@@ -578,6 +609,7 @@ namespace Mapping
 
                 pictureB.Image = bmp;
             }
+            */
         
         }
 
@@ -606,10 +638,14 @@ namespace Mapping
 
         private void buttonPrint_Click(object sender, EventArgs e)
         {
-            imgToPrint = Image.FromFile( project_directory+ "\\cross.png") ;
-            Image imgToPastTop = Image.FromFile(project_directory + "\\newTop.jpg");
-            Image imgToPastRight = Image.FromFile(project_directory + "\\newRight.jpg");
-            Image imgToPastBack = Image.FromFile(project_directory + "\\newBack.jpg");
+            imgToPrint = Image.FromStream(  (new MemoryStream(File.ReadAllBytes( project_directory+ "\\cross.png" )) ) ) ;
+            Image imgToPastTop = Image.FromStream( (new MemoryStream(File.ReadAllBytes( project_directory + "\\newTop.jpg" )) ) );
+            Image imgToPastRight = Image.FromStream((new MemoryStream(File.ReadAllBytes(project_directory + "\\newRight.jpg"))));
+            Image imgToPastBack = Image.FromStream((new MemoryStream(File.ReadAllBytes(project_directory + "\\newBack.jpg"))));
+
+            //Image imgToPastTop = Image.FromFile(project_directory + "\\newTop.jpg");
+            //Image imgToPastRight = Image.FromFile(project_directory + "\\newRight.jpg");
+            //Image imgToPastBack = Image.FromFile(project_directory + "\\newBack.jpg");
 
             Rectangle regionSrcTop = new Rectangle(new System.Drawing.Point(0, 0), new Size(imgToPastTop.Width, imgToPastTop.Height));
             Rectangle regionSrcRight = new Rectangle(new System.Drawing.Point(0, 0), new Size(imgToPastRight.Width, imgToPastRight.Height));
@@ -624,8 +660,8 @@ namespace Mapping
             CopyRegionIntoImage((Bitmap)imgToPastBack, regionSrcBack, (Bitmap)imgToPrint, regionDestBack);
 
 
-            PrintPreviewDialog print1 = new PrintPreviewDialog();
-            //PrintDialog print1 = new PrintDialog();
+            //PrintPreviewDialog print1 = new PrintPreviewDialog();
+            PrintDialog print1 = new PrintDialog();
             print1.Document = this.pd;
             if (print1.ShowDialog() == DialogResult.OK)
             { pd.Print(); }

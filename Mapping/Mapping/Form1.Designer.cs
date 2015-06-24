@@ -81,6 +81,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(125, 264);
             this.listBox1.TabIndex = 3;
+            this.listBox1.Visible = false;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // buttonPreview
@@ -101,6 +102,7 @@
             this.buttonCoordinates.TabIndex = 5;
             this.buttonCoordinates.Text = "Coordonnées";
             this.buttonCoordinates.UseVisualStyleBackColor = true;
+            this.buttonCoordinates.Visible = false;
             this.buttonCoordinates.Click += new System.EventHandler(this.buttonCoordinates_Click);
             // 
             // buttonReinit
@@ -118,7 +120,8 @@
             this.pictureBoxRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxRight.Location = new System.Drawing.Point(543, 496);
             this.pictureBoxRight.Name = "pictureBoxRight";
-            this.pictureBoxRight.Size = new System.Drawing.Size(200, 200);
+            this.pictureBoxRight.Size = new System.Drawing.Size(202, 202);
+            this.pictureBoxRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxRight.TabIndex = 7;
             this.pictureBoxRight.TabStop = false;
             // 
@@ -127,7 +130,8 @@
             this.pictureBoxBack.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxBack.Location = new System.Drawing.Point(749, 496);
             this.pictureBoxBack.Name = "pictureBoxBack";
-            this.pictureBoxBack.Size = new System.Drawing.Size(200, 200);
+            this.pictureBoxBack.Size = new System.Drawing.Size(202, 202);
+            this.pictureBoxBack.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxBack.TabIndex = 8;
             this.pictureBoxBack.TabStop = false;
             // 
@@ -136,8 +140,8 @@
             this.pictureBoxTop.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxTop.Location = new System.Drawing.Point(337, 496);
             this.pictureBoxTop.Name = "pictureBoxTop";
-            this.pictureBoxTop.Size = new System.Drawing.Size(200, 200);
-            this.pictureBoxTop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxTop.Size = new System.Drawing.Size(202, 202);
+            this.pictureBoxTop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxTop.TabIndex = 9;
             this.pictureBoxTop.TabStop = false;
             // 
